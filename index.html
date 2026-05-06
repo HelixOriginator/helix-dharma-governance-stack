@@ -1,0 +1,2445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HELIX DHARMA-GOV STACK · Bengal Renaissance 2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0a0a0b;
+    --bg2:       #111114;
+    --bg3:       #16161a;
+    --bg4:       #1e1e24;
+    --border:    rgba(255,255,255,0.07);
+    --border2:   rgba(255,255,255,0.12);
+    --gold:      #c9a84c;
+    --gold2:     #e8c97a;
+    --gold-dim:  rgba(201,168,76,0.12);
+    --gold-glow: rgba(201,168,76,0.06);
+    --teal:      #2dd4bf;
+    --teal-dim:  rgba(45,212,191,0.08);
+    --amber:     #f59e0b;
+    --amber-dim: rgba(245,158,11,0.08);
+    --coral:     #f87171;
+    --coral-dim: rgba(248,113,113,0.08);
+    --violet:    #a78bfa;
+    --violet-dim:rgba(167,139,250,0.08);
+    --blue:      #60a5fa;
+    --blue-dim:  rgba(96,165,250,0.08);
+    --text:      #e8e6df;
+    --text2:     #9b9890;
+    --text3:     #5c5a54;
+    --serif:     'Cormorant Garamond', Georgia, serif;
+    --sans:      'Outfit', sans-serif;
+    --mono:      'DM Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── GRID BACKGROUND ── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px;
+    background: rgba(10,10,11,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .nav-brand {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text2);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-doi {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── WRAPPER ── */
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 120px;
+    padding-bottom: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: 20%;
+    left: -10%;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-glow2 {
+    position: absolute;
+    bottom: 10%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(45,212,191,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 0.5px;
+    background: var(--gold);
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(52px, 7vw, 96px);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.4s;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-title-sub {
+    font-family: var(--serif);
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text2);
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.55s;
+  }
+
+  .hero-desc {
+    max-width: 620px;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text2);
+    line-height: 1.8;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.7s;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 0;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.85s;
+  }
+
+  .hero-stat {
+    padding: 20px 32px;
+    border: 0.5px solid var(--border);
+    border-right: none;
+    position: relative;
+  }
+
+  .hero-stat:last-child { border-right: 0.5px solid var(--border); }
+
+  .hero-stat-num {
+    font-family: var(--serif);
+    font-size: 42px;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .hero-stat-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* ── SECTION BASE ── */
+  section { padding: 100px 0; position: relative; }
+
+  .section-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-eyebrow::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--border);
+    max-width: 80px;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  .section-sub {
+    font-size: 15px;
+    color: var(--text2);
+    max-width: 560px;
+    line-height: 1.8;
+    margin-bottom: 60px;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 0.5px;
+    background: linear-gradient(90deg, transparent, var(--border2), transparent);
+    margin: 0;
+  }
+
+  /* ── PLATFORM OVERVIEW TABLE ── */
+  .platform-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 60px;
+  }
+
+  .platform-table th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 12px 20px;
+    text-align: left;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .platform-table td {
+    padding: 18px 20px;
+    border-bottom: 0.5px solid var(--border);
+    font-size: 13px;
+    vertical-align: top;
+  }
+
+  .platform-table tr:hover td { background: var(--gold-glow); }
+
+  .platform-table .t-layer {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+  }
+
+  .platform-table .t-name {
+    font-weight: 500;
+    color: var(--text);
+    font-size: 14px;
+  }
+
+  .platform-table .t-doi {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--teal);
+  }
+
+  /* ── LAYER CARDS ── */
+  .layers { display: flex; flex-direction: column; gap: 2px; }
+
+  .layer-block {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .layer-block:hover { border-color: var(--border2); }
+
+  .layer-block-header {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: center;
+    gap: 32px;
+    padding: 32px 40px;
+    cursor: pointer;
+  }
+
+  .layer-num {
+    font-family: var(--serif);
+    font-size: 72px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--border2);
+    transition: color 0.3s;
+  }
+
+  .layer-block:hover .layer-num { color: var(--gold-dim); }
+
+  .layer-info {}
+
+  .layer-badge-text {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .layer-heading {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .layer-heading em { font-style: italic; color: var(--gold); }
+
+  .layer-tagline {
+    font-size: 13px;
+    color: var(--text2);
+    max-width: 560px;
+  }
+
+  .layer-toggle {
+    font-family: var(--mono);
+    font-size: 18px;
+    color: var(--text3);
+    transition: transform 0.3s, color 0.3s;
+    user-select: none;
+  }
+
+  .layer-block.open .layer-toggle { transform: rotate(45deg); color: var(--gold); }
+
+  .layer-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+  }
+
+  .layer-body-inner {
+    padding: 0 40px 40px;
+    border-top: 0.5px solid var(--border);
+  }
+
+  .layer-desc-full {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.9;
+    max-width: 700px;
+    margin: 28px 0 32px;
+  }
+
+  .doi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    margin-bottom: 32px;
+  }
+
+  .doi-item {
+    background: var(--bg3);
+    padding: 16px 20px;
+    transition: background 0.2s;
+  }
+
+  .doi-item:hover { background: var(--bg4); }
+
+  .doi-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+
+  .doi-title {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+
+  .doi-link {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--teal);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .doi-link:hover { opacity: 1; }
+
+  .features-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .feature-cell {
+    background: var(--bg3);
+    padding: 20px;
+  }
+
+  .feature-cell-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+
+  .feature-cell-val {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ── POLICY TRACKER SECTION ── */
+  .districts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    margin-bottom: 48px;
+  }
+
+  .district-cell {
+    background: var(--bg2);
+    padding: 16px;
+    cursor: default;
+    transition: background 0.2s;
+    position: relative;
+  }
+
+  .district-cell:hover { background: var(--bg4); }
+
+  .district-name {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .district-score {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .score-bar {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .score-fill {
+    height: 100%;
+    border-radius: 1px;
+    background: var(--gold);
+  }
+
+  /* ── PHILOSOPHICAL FRAMEWORK ── */
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .principle-card {
+    background: var(--bg2);
+    padding: 36px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .principle-card::before {
+    content: '';
+    position: absolute;
+    bottom: -40px; right: -40px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .principle-card:hover { background: var(--bg3); }
+
+  .principle-sanskrit {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.3;
+    margin-bottom: 12px;
+  }
+
+  .principle-english {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 16px;
+  }
+
+  .principle-source {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  .principle-ref {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 12px;
+  }
+
+  /* ── RECOGNITION PATH ── */
+  .recognition-timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .recognition-timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 8px; bottom: 8px;
+    width: 0.5px;
+    background: linear-gradient(to bottom, var(--gold), var(--teal), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 48px;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -36px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 0.5px solid var(--gold);
+    background: var(--bg);
+  }
+
+  .timeline-phase {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .timeline-title {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 300;
+    margin-bottom: 12px;
+  }
+
+  .timeline-desc {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.8;
+    max-width: 600px;
+  }
+
+  .timeline-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .timeline-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 4px 12px;
+    border: 0.5px solid var(--border2);
+    color: var(--text3);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── RESEARCH CORPUS TABLE ── */
+  .corpus-section { background: var(--bg2); }
+
+  .corpus-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .corpus-item {
+    background: var(--bg3);
+    padding: 20px 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    transition: background 0.2s;
+  }
+
+  .corpus-item:hover { background: var(--bg4); }
+
+  .corpus-num {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--text3);
+    min-width: 40px;
+    line-height: 1.4;
+  }
+
+  .corpus-content {}
+
+  .corpus-cat {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .corpus-name {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 4px;
+  }
+
+  .corpus-doi {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+  }
+
+  /* ── ARCH DIAGRAM ── */
+  .arch-diagram {
+    border: 0.5px solid var(--border);
+    background: var(--bg2);
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .arch-diagram::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .arch-row {
+    display: grid;
+    gap: 1px;
+    background: var(--border);
+    margin-bottom: 1px;
+  }
+
+  .arch-row.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .arch-row.cols-1 { grid-template-columns: 1fr; }
+  .arch-row.cols-2 { grid-template-columns: 1fr 1fr; }
+
+  .arch-cell {
+    background: var(--bg3);
+    padding: 24px 28px;
+    position: relative;
+  }
+
+  .arch-cell.accent-gold { border-top: 2px solid var(--gold); }
+  .arch-cell.accent-teal { border-top: 2px solid var(--teal); }
+  .arch-cell.accent-violet { border-top: 2px solid var(--violet); }
+  .arch-cell.accent-coral { border-top: 2px solid var(--coral); }
+  .arch-cell.accent-amber { border-top: 2px solid var(--amber); }
+  .arch-cell.accent-blue { border-top: 2px solid var(--blue); }
+
+  .arch-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+
+  .arch-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .arch-sub {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  .arch-arrow {
+    text-align: center;
+    padding: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    background: var(--bg2);
+  }
+
+  /* ── CTA ── */
+  .cta-section {
+    background: var(--bg2);
+    border-top: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+    padding: 100px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(201,168,76,0.06) 0%, transparent 70%);
+  }
+
+  .cta-title {
+    font-family: var(--serif);
+    font-size: clamp(40px, 5vw, 72px);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .cta-title em { font-style: italic; color: var(--gold); }
+
+  .cta-sub {
+    font-size: 15px;
+    color: var(--text2);
+    max-width: 540px;
+    margin: 0 auto 48px;
+    line-height: 1.8;
+    position: relative;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    position: relative;
+  }
+
+  .btn-primary {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    background: var(--gold);
+    color: var(--bg);
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  .btn-ghost {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    background: transparent;
+    color: var(--text2);
+    border: 0.5px solid var(--border2);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 60px 0;
+    border-top: 0.5px solid var(--border);
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+
+  .footer-logo {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .footer-tagline {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  .footer-col-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 16px;
+  }
+
+  .footer-links { list-style: none; }
+
+  .footer-links li {
+    margin-bottom: 10px;
+  }
+
+  .footer-links a {
+    font-size: 13px;
+    color: var(--text2);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--gold); }
+
+  .footer-bottom {
+    border-top: 0.5px solid var(--border);
+    padding-top: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-credit {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  .footer-credit strong {
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .footer-orcid {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── BADGE COLORS ── */
+  .c-gold  { color: var(--gold);   }
+  .c-teal  { color: var(--teal);   }
+  .c-coral { color: var(--coral);  }
+  .c-violet{ color: var(--violet); }
+  .c-amber { color: var(--amber);  }
+  .c-blue  { color: var(--blue);   }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50%       { opacity: 1; }
+  }
+
+  .animate-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .animate-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── QUOTE BLOCK ── */
+  .quote-block {
+    border-left: 2px solid var(--gold);
+    padding: 20px 28px;
+    background: var(--gold-glow);
+    margin: 32px 0;
+  }
+
+  .quote-text {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+
+  .quote-ref {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.12em;
+  }
+
+  /* ── STATUS PILL ── */
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 5px 12px;
+    border: 0.5px solid var(--border2);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .wrapper { padding: 0 24px; }
+    .hero-stats { flex-wrap: wrap; }
+    .principles-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+    .arch-row.cols-3 { grid-template-columns: 1fr; }
+    .arch-row.cols-2 { grid-template-columns: 1fr; }
+    .cta-buttons { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAVIGATION ── -->
+<nav>
+  <div class="nav-brand">⬡ Helix Dharma-Gov Stack</div>
+  <ul class="nav-links">
+    <li><a href="#platform">Platform</a></li>
+    <li><a href="#layers">Architecture</a></li>
+    <li><a href="#philosophy">Philosophy</a></li>
+    <li><a href="#districts">Districts</a></li>
+    <li><a href="#corpus">Corpus</a></li>
+    <li><a href="#bengal">Bengal 2.0</a></li>
+    <li><a href="#recognition">Recognition</a></li>
+  </ul>
+  <div class="nav-doi">ORCID 0009-0007-4971-8936</div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="wrapper">
+    <div class="hero-glow"></div>
+    <div class="hero-glow2"></div>
+
+    <div class="hero-tag">
+      <span>Bengal Renaissance 2.0</span>
+      <span class="status-pill">
+        <span class="status-dot" style="background: var(--teal);"></span>
+        <span style="color: var(--teal);">264 DOI Active</span>
+      </span>
+    </div>
+
+    <h1 class="hero-title">
+      Helix<br>
+      <em>Dharma-Gov</em><br>
+      Stack
+    </h1>
+
+    <p class="hero-title-sub">The Intellectual Infrastructure of New Bengal</p>
+
+    <p class="hero-desc">
+      The world's first AI-powered civilizational governance platform built entirely from peer-indexed Dharmic research.
+      Three integrated layers — an AI Oracle, a Policy Pulse Dashboard, and a Merit Ledger —
+      operationalising 264 DOI-verified papers into a live civic intelligence system for West Bengal and the nation.
+    </p>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">264</div>
+        <div class="hero-stat-label">Total DOIs</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">241</div>
+        <div class="hero-stat-label">Files available</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">25</div>
+        <div class="hero-stat-label">Govt copyrights</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">25</div>
+        <div class="hero-stat-label">DeSci verified ≥90%</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">3</div>
+        <div class="hero-stat-label">Platform layers</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">23</div>
+        <div class="hero-stat-label">Bengal districts</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── PLATFORM OVERVIEW ── -->
+<section id="platform">
+  <div class="wrapper">
+    <div class="section-eyebrow animate-in">Platform Overview</div>
+    <h2 class="section-title animate-in">
+      Three layers. One <em>integrated</em><br>civilizational stack.
+    </h2>
+    <p class="section-sub animate-in">
+      Three integrated layers — an AI Oracle, a Policy Pulse Dashboard, and a Merit Ledger —
+      operationalising 264 DOI-verified papers. Not a proposal. A running system built on verifiable scholarship.
+    </p>
+
+    <table class="platform-table animate-in">
+      <thead>
+        <tr>
+          <th>Layer</th>
+          <th>Platform Name</th>
+          <th>Core Function</th>
+          <th>Dharmic Principle</th>
+          <th>Key DOI Papers</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="t-layer c-gold">01 · CORE AI</span></td>
+          <td><span class="t-name">Sanatana Samyata Oracle</span></td>
+          <td>Conversational AI countering misconceptions about Hindu Dharma using scriptural evidence + historical proof</td>
+          <td style="color: var(--gold); font-family: var(--serif); font-style: italic; font-size: 14px;">Satya · Dharma · Viveka</td>
+          <td><span class="t-doi">#049 · #305 · #306 · #013 · #273 · #277</span></td>
+        </tr>
+        <tr>
+          <td><span class="t-layer c-teal">02 · POLICY AI</span></td>
+          <td><span class="t-name">Double Engine Pulse</span></td>
+          <td>Real-time tracking of Central scheme delivery across Bengal's 23 districts with Karma Index governance scoring</td>
+          <td style="color: var(--teal); font-family: var(--serif); font-style: italic; font-size: 14px;">Rajadharma · Niti · Seva</td>
+          <td><span class="t-doi">#053 · #054 · #059 · #265 · #304 · #067</span></td>
+        </tr>
+        <tr>
+          <td><span class="t-layer c-violet">03 · MERIT AI</span></td>
+          <td><span class="t-name">Helix Merit Ledger</span></td>
+          <td>Digital recognition of Bengal contributors indexed by guna + karma (quality + action), not birth</td>
+          <td style="color: var(--violet); font-family: var(--serif); font-style: italic; font-size: 14px;">Karma · Guna · Samata</td>
+          <td><span class="t-doi">#294 · #278 · #070 · #119 · #095 · #300</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="quote-block animate-in">
+      <div class="quote-text">"धर्मो रक्षति रक्षितः" — Dharma protects those who protect Dharma.</div>
+      <div class="quote-ref">Manusmriti · Core principle of the HDGS framework</div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── ARCHITECTURE DIAGRAM ── -->
+<section id="layers">
+  <div class="wrapper">
+    <div class="section-eyebrow animate-in">Technical Architecture</div>
+    <h2 class="section-title animate-in">System <em>architecture</em><br>& deployment stack</h2>
+    <p class="section-sub animate-in">
+      Built on your existing Netlify + GitHub infrastructure. Each component maps directly to a published paper.
+      The platform is a live implementation, not a prototype.
+    </p>
+
+    <div class="arch-diagram animate-in">
+
+      <div class="arch-row cols-1">
+        <div class="arch-cell accent-gold">
+          <div class="arch-label">User Interface Layer</div>
+          <div class="arch-title">Bengal Renaissance Portal — bengalrenaissance.in</div>
+          <div class="arch-sub">Trilingual (Bengali · Hindi · English) · Mobile-first · Netlify CDN · Dark-mode civic dashboard</div>
+        </div>
+      </div>
+
+      <div class="arch-arrow">↓ API Gateway · Rate Limited · Auth · Logs</div>
+
+      <div class="arch-row cols-3">
+        <div class="arch-cell accent-gold">
+          <div class="arch-label">Layer 01 · Sanatana Oracle</div>
+          <div class="arch-title">Dharma AI Engine</div>
+          <div class="arch-sub">Anthropic API · 30+ Dharma papers as context · Misconception detection · Scriptural citation engine</div>
+        </div>
+        <div class="arch-cell accent-teal">
+          <div class="arch-label">Layer 02 · Policy Pulse</div>
+          <div class="arch-title">Double Engine Dashboard</div>
+          <div class="arch-sub">23 district micro-sites · Karma Index scoring · DPTAS promise tracker · Real-time fund utilisation data</div>
+        </div>
+        <div class="arch-cell accent-violet">
+          <div class="arch-label">Layer 03 · Merit Ledger</div>
+          <div class="arch-title">Helix Recognition System</div>
+          <div class="arch-sub">Blind Justice Architecture · Competency mapping · Guna-Karma indexing · AI-powered matching</div>
+        </div>
+      </div>
+
+      <div class="arch-arrow">↓ Research Corpus Layer · 264 DOI Papers · DeSci Verified · 241 Files</div>
+
+      <div class="arch-row cols-3">
+        <div class="arch-cell accent-amber">
+          <div class="arch-label">Zenodo Repository</div>
+          <div class="arch-title">Primary Corpus</div>
+          <div class="arch-sub">264 papers · Dharma · Governance · Policy · Security · AI Ethics · Bengal Analysis</div>
+        </div>
+        <div class="arch-cell accent-blue">
+          <div class="arch-label">SSRN · Figshare · Knowledge Commons</div>
+          <div class="arch-title">Peer Network</div>
+          <div class="arch-sub">9 SSRN · 7 Figshare · 2 Knowledge Commons · Cross-indexed DOIs</div>
+        </div>
+        <div class="arch-cell accent-coral">
+          <div class="arch-label">DeSci Nodes · Govt Copyright</div>
+          <div class="arch-title">Verification Layer</div>
+          <div class="arch-sub">25 DeSci verified ≥90% · 25 Govt copyrights · PMO submission March 2026</div>
+        </div>
+      </div>
+
+      <div class="arch-arrow">↓ Infrastructure · Netlify CDN · GitHub · ORCID 0009-0007-4971-8936</div>
+
+      <div class="arch-row cols-2">
+        <div class="arch-cell accent-gold">
+          <div class="arch-label">Existing Live Infrastructure</div>
+          <div class="arch-title">kallol-241-repositories.netlify.app</div>
+          <div class="arch-sub">241 files served · Independent repository · No third-party platform required · Already operational</div>
+        </div>
+        <div class="arch-cell accent-teal">
+          <div class="arch-label">Dharma Research Hub</div>
+          <div class="arch-title">helixoriginator.github.io</div>
+          <div class="arch-sub">Sanatan Dharma Research Repository · Bengal-focused scholarship · Live deployment</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── THREE LAYERS DETAIL ── -->
+<section>
+  <div class="wrapper">
+    <div class="section-eyebrow animate-in">Layer Details</div>
+    <h2 class="section-title animate-in">Each layer is a <em>published paper</em><br>made operational</h2>
+
+    <div class="layers">
+
+      <!-- LAYER 1 -->
+      <div class="layer-block" id="block1">
+        <div class="layer-block-header" onclick="toggleLayer('block1')">
+          <div class="layer-num c-gold">01</div>
+          <div class="layer-info">
+            <div class="layer-badge-text c-gold">Core Intelligence · Dharma AI</div>
+            <div class="layer-heading"><em>Sanatana Samyata</em> Oracle</div>
+            <div class="layer-tagline">AI trained on your complete Dharma corpus — answers misconceptions with scriptural precision, links every principle to Bengal governance</div>
+          </div>
+          <div class="layer-toggle">+</div>
+        </div>
+        <div class="layer-body">
+          <div class="layer-body-inner">
+            <p class="layer-desc-full">
+              The Sanatana Samyata Oracle transforms your static PDF manual into a living conversational AI.
+              It draws on the complete Dharma corpus — Sanatana Samyata (DOI #049), Dharma-Karma Ready Reckoner (#306),
+              Sanatana Darshana (#305), the Scientific Ready Reckoner (#013), and the Decolonizing Caste Narrative (#273) —
+              to answer misconceptions in real time with scriptural evidence, historical proof, and a quick debate response.
+              <br><br>
+              Its unique differentiator: it maps every Dharmic principle directly to its modern policy equivalent.
+              Rajadharma becomes Double Engine delivery accountability. Karma Yoga becomes merit-based civil service reform.
+              Vasudhaiva Kutumbakam becomes Bengal's integration agenda. This is decolonization through live intelligence,
+              not textbook recitation.
+            </p>
+
+            <div class="doi-grid">
+              <div class="doi-item">
+                <div class="doi-num">#049 · ZENODO</div>
+                <div class="doi-title">Sanatana Samyata: The Complete Dharma Defense Manual</div>
+                <div class="doi-link">10.5281/ZENODO.16714489</div>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#306 · ZENODO</div>
+                <div class="doi-title">The World's First Dharma-Karma Ready Reckoner</div>
+                <div class="doi-link">10.5281/zenodo.16871078</div>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#305 · ZENODO</div>
+                <div class="doi-title">Sanatana Darshana: Evidence-Based Guide for Atheists, Agnostics and Ex-Muslims</div>
+                <div class="doi-link">10.5281/zenodo.17334809</div>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#013 · ZENODO</div>
+                <div class="doi-title">Sanatana Dharma: A Scientific Ready Reckoner</div>
+                <div class="doi-link">10.5281/ZENODO.18214037</div>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#273 · ZENODO</div>
+                <div class="doi-title">Decolonizing the Caste Narrative: Historical and Socio-Cultural Analysis</div>
+                <div class="doi-link">DeSci Verified 92%</div>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#277 · ZENODO</div>
+                <div class="doi-title">Debunking Civilizational Myths: An Expanded Ready Reckoner</div>
+                <a class="doi-link" href="https://nodes.desci.com/dpid/624" target="_blank">DeSci Node 624 ↗</a>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#298 · ZENODO</div>
+                <div class="doi-title">The No Conversion Educational Framework: Evidence-Based Literacy</div>
+                <div class="doi-link">10.5281/zenodo.18137625</div>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#158 · ZENODO</div>
+                <div class="doi-title">Myths and Realities of Manusmriti: Comparative Study with Ancient Legal Texts</div>
+                <div class="doi-link">10.5281/ZENODO.14680437</div>
+              </div>
+            </div>
+
+            <div class="features-row">
+              <div class="feature-cell">
+                <div class="feature-cell-label">Input modality</div>
+                <div class="feature-cell-val">Query in Bengali · Hindi · English — text or voice</div>
+              </div>
+              <div class="feature-cell">
+                <div class="feature-cell-label">AI engine</div>
+                <div class="feature-cell-val">Anthropic API + your 30+ Dharma papers as live context window</div>
+              </div>
+              <div class="feature-cell">
+                <div class="feature-cell-label">Response format</div>
+                <div class="feature-cell-val">Scriptural evidence + historical proof + quick debate response + policy link</div>
+              </div>
+              <div class="feature-cell">
+                <div class="feature-cell-label">Unique hook</div>
+                <div class="feature-cell-val">Every Dharmic principle mapped to its Double Engine governance equivalent</div>
+              </div>
+              <div class="feature-cell">
+                <div class="feature-cell-label">Ministry pitch</div>
+                <div class="feature-cell-val">Culture / Education Ministry — decolonization tool for Bengal's intellectual ecosystem</div>
+              </div>
+              <div class="feature-cell">
+                <div class="feature-cell-label">Scale</div>
+                <div class="feature-cell-val">Deployable as WhatsApp bot · Web widget · Temple kiosk · School module</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- LAYER 2 -->
+      <div class="layer-block" id="block2">
+        <div class="layer-block-header" onclick="toggleLayer('block2')">
+          <div class="layer-num c-teal">02</div>
+          <div class="layer-info">
+            <div class="layer-badge-text c-teal">Policy Intelligence · Governance AI</div>
+            <div class="layer-heading"><em>Double Engine</em> Pulse Dashboard</div>
+            <div class="layer-tagline">Real-time Central scheme tracking across Bengal's 23 districts with Karma Index governance scoring and DPTAS promise verification</div>
+          </div>
+          <div class="layer-toggle">+</div>
+        </div>
+        <div class="layer-body">
+          <div class="layer-body-inner">
+            <p class="layer-desc-full">
+              The Double Engine Pulse Dashboard is the operational deployment of four published district-level
+              analysis papers. It tracks PM-Kisan, Ayushman Bharat, Jal Jeevan Mission, and Swachh Bharat
+              delivery across Bengal's 23 districts in real time — displaying Central funds released versus
+              state utilisation, with a Karma Index governance score derived directly from your DOI #304 framework.
+              <br><br>
+              The DPTAS political promise tracker (SSRN #265 — world-first AI system for political promise tracking)
+              monitors delivery against election commitments. Every metric is linked to an Arthashastra or Rajadharma
+              principle, making this not just a governance dashboard but a civilizational accountability engine.
+              23 district micro-sites auto-deployed via your existing Netlify infrastructure.
+            </p>
+
+            <div class="doi-grid">
+              <div class="doi-item">
+                <div class="doi-num">#053 · ZENODO</div>
+                <div class="doi-title">District-Level Analysis of Ayushman Bharat: Evaluating Health Justice</div>
+                <div class="doi-link">10.5281/ZENODO.16568316</div>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#054 · ZENODO</div>
+                <div class="doi-title">Hydro-Politics and Equity: Assessment of India's Jal Jeevan Mission</div>
+                <div class="doi-link">10.5281/ZENODO.16527240</div>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#059 · ZENODO</div>
+                <div class="doi-title">Remote Monitoring of Swachh Bharat via Satellite Imagery and Machine Learning</div>
+                <div class="doi-link">10.5281/ZENODO.16414167</div>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#265 · SSRN</div>
+                <div class="doi-title">World-First AI System for Political Promise Tracking: DPTAS and Transparent Digital Governance</div>
+                <a class="doi-link" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5338886" target="_blank">SSRN 5338886 ↗</a>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#304 · ZENODO</div>
+                <div class="doi-title">The Karma Index: Measuring Ethical Causality and Integrating Ancient Wisdom in Modern Governance</div>
+                <div class="doi-link">10.5281/zenodo.17374186</div>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#264 · SSRN</div>
+                <div class="doi-title">The Vedic Analytical Framework for Governance, Policing and Education (VAFGPE)</div>
+                <a class="doi-link" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5381476" target="_blank">SSRN 5381476 ↗</a>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#067 · ZENODO</div>
+                <div class="doi-title">From Elite Capture to Citizen Empowerment: India's Dual-Track Governance Revolution</div>
+                <div class="doi-link">10.5281/ZENODO.15880176</div>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#302 · ZENODO</div>
+                <div class="doi-title">Algorithmic Governance: How Digital Keywords Shape Policy Communication and Public Trust</div>
+                <div class="doi-link">10.5281/zenodo.17548163</div>
+              </div>
+            </div>
+
+            <div class="features-row">
+              <div class="feature-cell">
+                <div class="feature-cell-label">23 district sites</div>
+                <div class="feature-cell-val">One Netlify branch per district — auto-deployed from single repository</div>
+              </div>
+              <div class="feature-cell">
+                <div class="feature-cell-label">Karma Index</div>
+                <div class="feature-cell-val">Governance ethics score from DOI #304 — applied to each district administration</div>
+              </div>
+              <div class="feature-cell">
+                <div class="feature-cell-label">DPTAS tracker</div>
+                <div class="feature-cell-val">World-first political promise verification system — already submitted to PMO March 2026</div>
+              </div>
+              <div class="feature-cell">
+                <div class="feature-cell-label">Dharmic frame</div>
+                <div class="feature-cell-val">Each metric linked to Arthashastra / Rajadharma / Kautilya principle from your corpus</div>
+              </div>
+              <div class="feature-cell">
+                <div class="feature-cell-label">Satellite ML</div>
+                <div class="feature-cell-val">Swachh Bharat remote monitoring from DOI #059 — live district verification</div>
+              </div>
+              <div class="feature-cell">
+                <div class="feature-cell-label">Govt pitch</div>
+                <div class="feature-cell-val">Primary data source for new Bengal government's first 100-day policy review</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- LAYER 3 -->
+      <div class="layer-block" id="block3">
+        <div class="layer-block-header" onclick="toggleLayer('block3')">
+          <div class="layer-num c-violet">03</div>
+          <div class="layer-info">
+            <div class="layer-badge-text c-violet">Merit Intelligence · Recognition AI</div>
+            <div class="layer-heading"><em>Helix Merit</em> Ledger Bengal</div>
+            <div class="layer-tagline">Digital recognition of Bengal contributors indexed by guna + karma (quality + action), not birth — implementing your Blind Justice Architecture</div>
+          </div>
+          <div class="layer-toggle">+</div>
+        </div>
+        <div class="layer-body">
+          <div class="layer-body-inner">
+            <p class="layer-desc-full">
+              The Helix Merit Ledger Bengal is the operational implementation of your Blind Justice Architecture
+              (DOI #294) and Global Competency Mapping Framework (DOI #278). It creates a digital recognition
+              system for Bengal's contributors — doctors, teachers, grassroots workers, entrepreneurs — indexed
+              by guna (quality of character) and karma (actions taken), directly from Bhagavad Gita 4.13:
+              caste is created by qualities and actions, not birth.
+              <br><br>
+              This is simultaneously a social reform instrument and a governance tool. It generates the first
+              caste-neutral, evidence-indexed record of Bengal's contributing class — a dataset that government,
+              corporate, and civil society can use for merit-based appointments, awards, and resource allocation.
+              The Positive Staircase Model (DOI #119) governs the upliftment pathway.
+            </p>
+
+            <div class="doi-grid">
+              <div class="doi-item">
+                <div class="doi-num">#294 · ZENODO</div>
+                <div class="doi-title">Blind Justice Architecture (BJA): Caste-Neutral, Evidence-First Framework for Equity Governance</div>
+                <div class="doi-link">10.5281/zenodo.18491507</div>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#278 · DeSci</div>
+                <div class="doi-title">The Global Competency Mapping Framework: A Merit-Based Talent Revolution</div>
+                <a class="doi-link" href="https://nodes.desci.com/dpid/508" target="_blank">DeSci Node 508 ↗</a>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#119 · DeSci 99%</div>
+                <div class="doi-title">The Positive Staircase Model: Decentralized Framework for Employment and Entrepreneurship</div>
+                <a class="doi-link" href="https://doi.org/10.62891/cc1e90d2" target="_blank">10.62891/cc1e90d2 ↗</a>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#095 · DeSci 93%</div>
+                <div class="doi-title">Employment Shopping: AI-Powered Mobile Hubs for Inclusive Workforce Integration</div>
+                <a class="doi-link" href="https://doi.org/10.62891/ada36db8" target="_blank">10.62891/ada36db8 ↗</a>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#070 · ZENODO</div>
+                <div class="doi-title">Invisible India: Mapping Economic Marginalization Across Social Categories</div>
+                <div class="doi-link">10.5281/ZENODO.15841828</div>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#300 · ZENODO</div>
+                <div class="doi-title">Bharat-Ekta-Mission: Voluntary Caste Transcendence Economic Integration Framework 2025</div>
+                <div class="doi-link">10.5281/zenodo.17824362</div>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#262 · SSRN</div>
+                <div class="doi-title">Employment Shopping: AI-Driven Universal Job Allocation Model for Inclusive Workforce Integration</div>
+                <a class="doi-link" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5315510" target="_blank">SSRN 5315510 ↗</a>
+              </div>
+              <div class="doi-item">
+                <div class="doi-num">#048 · ZENODO</div>
+                <div class="doi-title">Hindu Community Resilience and Empowerment Program (HCREP)</div>
+                <div class="doi-link">10.5281/ZENODO.16755432</div>
+              </div>
+            </div>
+
+            <div class="features-row">
+              <div class="feature-cell">
+                <div class="feature-cell-label">Merit credits</div>
+                <div class="feature-cell-val">Based on guna + karma — quality of character + actions taken for society</div>
+              </div>
+              <div class="feature-cell">
+                <div class="feature-cell-label">Caste-neutral</div>
+                <div class="feature-cell-val">Blind Justice Architecture from DOI #294 — evidence-first, identity-blind</div>
+              </div>
+              <div class="feature-cell">
+                <div class="feature-cell-label">AI matching</div>
+                <div class="feature-cell-val">Employment Shopping AI from #095 connects talent to opportunities</div>
+              </div>
+              <div class="feature-cell">
+                <div class="feature-cell-label">Govt use</div>
+                <div class="feature-cell-val">Baseline data for merit-based appointments, awards, resource allocation</div>
+              </div>
+              <div class="feature-cell">
+                <div class="feature-cell-label">Reform instrument</div>
+                <div class="feature-cell-val">First verifiable implementation of Gita 4.13 in civic infrastructure</div>
+              </div>
+              <div class="feature-cell">
+                <div class="feature-cell-label">Scale</div>
+                <div class="feature-cell-val">District level → State level → National replication model</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── PHILOSOPHICAL FOUNDATIONS ── -->
+<section id="philosophy">
+  <div class="wrapper">
+    <div class="section-eyebrow animate-in">Philosophical Foundation</div>
+    <h2 class="section-title animate-in">
+      Ancient wisdom as<br><em>governance architecture</em>
+    </h2>
+    <p class="section-sub animate-in">
+      Each of the platform's core mechanisms is rooted in a Vedic mahavakya or scriptural principle —
+      not as ornament, but as operational logic. From your Sanatana Samyata manual and Dharma-Karma Ready Reckoner.
+    </p>
+
+    <div class="principles-grid animate-in">
+
+      <div class="principle-card" style="--accent-glow: var(--gold-dim);">
+        <div class="principle-sanskrit c-gold">तत् त्वम् असि</div>
+        <div class="principle-english">Tat Tvam Asi</div>
+        <div class="principle-source">
+          "Thou Art That" — the divine essence is identical in every being. No being is inherently superior or inferior.
+          This is the philosophical foundation of the Merit Ledger: every contributor is indexed as equal in essence,
+          differentiated only by actions.
+        </div>
+        <div class="principle-ref">Chandogya Upanishad 6.8.7 · Layer 03 foundation</div>
+      </div>
+
+      <div class="principle-card" style="--accent-glow: var(--teal-dim);">
+        <div class="principle-sanskrit c-teal">धर्मेण एव प्रभवति</div>
+        <div class="principle-english">Rajadharma · Ruler's Duty</div>
+        <div class="principle-source">
+          "Everything flourishes through Dharma, everything is established in Dharma."
+          The Karma Index score in the Pulse Dashboard is a direct metric of Rajadharma compliance —
+          does the ruler protect the weak, ensure equal justice, provide economic welfare?
+        </div>
+        <div class="principle-ref">Mahabharata, Shanti Parva · Layer 02 scoring logic</div>
+      </div>
+
+      <div class="principle-card" style="--accent-glow: var(--violet-dim);">
+        <div class="principle-sanskrit c-violet">वसुधैव कुटुम्बकम्</div>
+        <div class="principle-english">Vasudhaiva Kutumbakam</div>
+        <div class="principle-source">
+          "The world is one family." For the magnanimous, there is no us vs them.
+          This is the integration principle of the entire platform — Bengal's diverse communities
+          are not competing factions but contributors to a single civilizational project.
+        </div>
+        <div class="principle-ref">Maha Upanishad 6.71-73 · Platform ethos</div>
+      </div>
+
+      <div class="principle-card" style="--accent-glow: var(--amber-dim);">
+        <div class="principle-sanskrit c-amber">चातुर्वर्ण्यं मया सृष्टं गुणकर्मविभागशः</div>
+        <div class="principle-english">Guna-Karma Classification</div>
+        <div class="principle-source">
+          "The four-fold order was created by Me according to qualities and actions, not birth."
+          Bhagavad Gita 4.13 is the scriptural mandate for the Merit Ledger —
+          classification by character and contribution, not lineage.
+        </div>
+        <div class="principle-ref">Bhagavad Gita 4.13 · Layer 03 indexing logic</div>
+      </div>
+
+      <div class="principle-card" style="--accent-glow: var(--coral-dim);">
+        <div class="principle-sanskrit c-coral">सर्वे भवन्तु सुखिनः</div>
+        <div class="principle-english">Sarva Sukha · Universal Welfare</div>
+        <div class="principle-source">
+          "May all beings be happy, may all beings be healthy."
+          The welfare tracking in the Pulse Dashboard — PM-Kisan, Ayushman Bharat, Jal Jeevan —
+          is the administrative implementation of this Vedic commitment to universal welfare.
+        </div>
+        <div class="principle-ref">Brihadaranyaka Upanishad · Layer 02 welfare metrics</div>
+      </div>
+
+      <div class="principle-card" style="--accent-glow: var(--blue-dim);">
+        <div class="principle-sanskrit c-blue">एकं सद्विप्रा बहुधा वदन्ति</div>
+        <div class="principle-english">Sarva Dharma Sambhava</div>
+        <div class="principle-source">
+          "Truth is one; the wise call it by various names."
+          The Oracle's response architecture is built on this — it does not dismiss other faiths
+          but demonstrates that Dharmic truth is universal, not sectarian. Rig Veda 1.164.46.
+        </div>
+        <div class="principle-ref">Rig Veda 1.164.46 · Oracle response logic</div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── DISTRICTS ── -->
+<section id="districts" style="background: var(--bg2);">
+  <div class="wrapper">
+    <div class="section-eyebrow animate-in">Double Engine Pulse · District Network</div>
+    <h2 class="section-title animate-in">
+      23 Bengal districts.<br><em>One governance</em> intelligence network.
+    </h2>
+    <p class="section-sub animate-in">
+      Each district gets an auto-deployed micro-site showing Central scheme delivery,
+      Karma Index governance score, and a DPTAS promise-tracking feed. Built on your existing Netlify infrastructure.
+    </p>
+
+    <div class="districts-grid animate-in">
+      <!-- Kolkata Division -->
+      <div class="district-cell">
+        <div class="district-name">Kolkata</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 78%"></div></div>
+          <span>78</span>
+        </div>
+      </div>
+      <div class="district-cell">
+        <div class="district-name">Howrah</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 65%"></div></div>
+          <span>65</span>
+        </div>
+      </div>
+      <div class="district-cell">
+        <div class="district-name">North 24 Parganas</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 71%"></div></div>
+          <span>71</span>
+        </div>
+      </div>
+      <div class="district-cell">
+        <div class="district-name">South 24 Parganas</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 58%"></div></div>
+          <span>58</span>
+        </div>
+      </div>
+      <div class="district-cell">
+        <div class="district-name">Hooghly</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 69%"></div></div>
+          <span>69</span>
+        </div>
+      </div>
+      <!-- Burdwan Division -->
+      <div class="district-cell">
+        <div class="district-name">Purba Bardhaman</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 74%"></div></div>
+          <span>74</span>
+        </div>
+      </div>
+      <div class="district-cell">
+        <div class="district-name">Paschim Bardhaman</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 66%"></div></div>
+          <span>66</span>
+        </div>
+      </div>
+      <div class="district-cell">
+        <div class="district-name">Birbhum</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 61%"></div></div>
+          <span>61</span>
+        </div>
+      </div>
+      <div class="district-cell">
+        <div class="district-name">Bankura</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 63%"></div></div>
+          <span>63</span>
+        </div>
+      </div>
+      <div class="district-cell">
+        <div class="district-name">Purulia</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 55%"></div></div>
+          <span>55</span>
+        </div>
+      </div>
+      <!-- Jalpaiguri Division -->
+      <div class="district-cell">
+        <div class="district-name">Darjeeling</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 82%"></div></div>
+          <span>82</span>
+        </div>
+      </div>
+      <div class="district-cell">
+        <div class="district-name">Jalpaiguri</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 67%"></div></div>
+          <span>67</span>
+        </div>
+      </div>
+      <div class="district-cell">
+        <div class="district-name">Alipurduar</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 59%"></div></div>
+          <span>59</span>
+        </div>
+      </div>
+      <div class="district-cell">
+        <div class="district-name">Cooch Behar</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 62%"></div></div>
+          <span>62</span>
+        </div>
+      </div>
+      <div class="district-cell">
+        <div class="district-name">Kalimpong</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 77%"></div></div>
+          <span>77</span>
+        </div>
+      </div>
+      <!-- Malda Division -->
+      <div class="district-cell">
+        <div class="district-name">Malda</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 53%"></div></div>
+          <span>53</span>
+        </div>
+      </div>
+      <div class="district-cell">
+        <div class="district-name">Uttar Dinajpur</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 51%"></div></div>
+          <span>51</span>
+        </div>
+      </div>
+      <div class="district-cell">
+        <div class="district-name">Dakshin Dinajpur</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 57%"></div></div>
+          <span>57</span>
+        </div>
+      </div>
+      <!-- Medinipur Division -->
+      <div class="district-cell">
+        <div class="district-name">Purba Medinipur</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 72%"></div></div>
+          <span>72</span>
+        </div>
+      </div>
+      <div class="district-cell">
+        <div class="district-name">Paschim Medinipur</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 68%"></div></div>
+          <span>68</span>
+        </div>
+      </div>
+      <div class="district-cell">
+        <div class="district-name">Jhargram</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 60%"></div></div>
+          <span>60</span>
+        </div>
+      </div>
+      <div class="district-cell">
+        <div class="district-name">Murshidabad</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 48%"></div></div>
+          <span>48</span>
+        </div>
+      </div>
+      <div class="district-cell">
+        <div class="district-name">Nadia</div>
+        <div class="district-score">
+          <span>KI</span>
+          <div class="score-bar"><div class="score-fill" style="width: 70%"></div></div>
+          <span>70</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.1em; text-align: center;">
+      KI = Karma Index Score (0–100) · Derived from DOI 10.5281/zenodo.17374186 · Illustrative baseline — live data via Central scheme APIs
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── RESEARCH CORPUS ── -->
+<section id="corpus">
+  <div class="wrapper">
+    <div class="section-eyebrow animate-in">Research Corpus · Platform Engine</div>
+    <h2 class="section-title animate-in">
+      264 DOI papers.<br><em>One integrated</em> intelligence.
+    </h2>
+    <p class="section-sub animate-in">
+      A selection of key papers across the platform's thematic pillars — Dharma, Governance, AI Ethics,
+      Security, Bengal Policy, and Vedic Economics. Full corpus at kallol-241-repositories.netlify.app
+    </p>
+
+    <div class="corpus-grid animate-in">
+
+      <div class="corpus-item">
+        <div class="corpus-num c-gold">049</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-gold">Dharma Core</div>
+          <div class="corpus-name">Sanatana Samyata: The Complete Dharma Defense Manual</div>
+          <div class="corpus-doi">10.5281/ZENODO.16714489</div>
+        </div>
+      </div>
+
+      <div class="corpus-item">
+        <div class="corpus-num c-teal">265</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-teal">AI Governance · World First</div>
+          <div class="corpus-name">DPTAS: World-First AI System for Political Promise Tracking</div>
+          <div class="corpus-doi">SSRN 5338886</div>
+        </div>
+      </div>
+
+      <div class="corpus-item">
+        <div class="corpus-num c-violet">264</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-violet">Policy Architecture</div>
+          <div class="corpus-name">VAFGPE: Vedic Analytical Framework for Governance, Policing and Education</div>
+          <div class="corpus-doi">SSRN 5381476</div>
+        </div>
+      </div>
+
+      <div class="corpus-item">
+        <div class="corpus-num c-gold">306</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-gold">Dharma Governance</div>
+          <div class="corpus-name">The World's First Dharma-Karma Ready Reckoner: Transforming Governance Through Ancient Wisdom</div>
+          <div class="corpus-doi">10.5281/zenodo.16871078</div>
+        </div>
+      </div>
+
+      <div class="corpus-item">
+        <div class="corpus-num c-amber">304</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-amber">Ethics Index</div>
+          <div class="corpus-name">The Karma Index: Measuring Ethical Causality in Modern Governance</div>
+          <div class="corpus-doi">10.5281/zenodo.17374186</div>
+        </div>
+      </div>
+
+      <div class="corpus-item">
+        <div class="corpus-num c-teal">294</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-teal">Justice Framework</div>
+          <div class="corpus-name">Blind Justice Architecture: Caste-Neutral Evidence-First Framework for Equity Governance</div>
+          <div class="corpus-doi">10.5281/zenodo.18491507</div>
+        </div>
+      </div>
+
+      <div class="corpus-item">
+        <div class="corpus-num c-blue">263</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-blue">AI Ethics · SSRN</div>
+          <div class="corpus-name">Quantum Ethical Uncertainty and Dharma-Driven AI: A Vedic Approach to Quantum-Enhanced Policy Governance</div>
+          <div class="corpus-doi"><a class="doi-link" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5581450" target="_blank">SSRN 5581450 ↗</a></div>
+        </div>
+      </div>
+
+      <div class="corpus-item">
+        <div class="corpus-num c-coral">177</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-coral">Security · DeSci 100%</div>
+          <div class="corpus-name">Shastra and Shakti: An Analysis of Operation Sindoor</div>
+          <div class="corpus-doi"><a class="doi-link" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5286196" target="_blank">SSRN 5286196 ↗</a></div>
+        </div>
+      </div>
+
+      <div class="corpus-item">
+        <div class="corpus-num c-teal">059</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-teal">ML · Policy Monitoring</div>
+          <div class="corpus-name">Remote Monitoring of Swachh Bharat via Satellite Imagery and Machine Learning</div>
+          <div class="corpus-doi">10.5281/ZENODO.16414167</div>
+        </div>
+      </div>
+
+      <div class="corpus-item">
+        <div class="corpus-num c-gold">273</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-gold">Historical Analysis · DeSci 92%</div>
+          <div class="corpus-name">Decolonizing the Caste Narrative: Historical and Socio-Cultural Analysis</div>
+          <div class="corpus-doi">Zenodo · DeSci Verified</div>
+        </div>
+      </div>
+
+      <div class="corpus-item">
+        <div class="corpus-num c-violet">295</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-violet">Philosophy</div>
+          <div class="corpus-name">Dharma as a Universal Principle of Order</div>
+          <div class="corpus-doi">10.5281/zenodo.18498639</div>
+        </div>
+      </div>
+
+      <div class="corpus-item">
+        <div class="corpus-num c-blue">266</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-blue">AI Ethics · SSRN 2026</div>
+          <div class="corpus-name">Structural Ethics in Civic Artificial Intelligence: The Algorithmic Sandwich Protocol</div>
+          <div class="corpus-doi"><a class="doi-link" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6416121" target="_blank">SSRN 6416121 ↗</a></div>
+        </div>
+      </div>
+
+      <div class="corpus-item">
+        <div class="corpus-num c-gold">267</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-gold">Civilizational Economics</div>
+          <div class="corpus-name">Civilizational Capital: Mapping India's Non-Material Assets in the Global Knowledge Economy</div>
+          <div class="corpus-doi">Zenodo · DOI Verified</div>
+        </div>
+      </div>
+
+      <div class="corpus-item">
+        <div class="corpus-num c-amber">268</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-amber">National Vision · Viksit Bharat</div>
+          <div class="corpus-name">PM Modi's Viksit Bharat 2047: A Comprehensive Policy and Civilizational Analysis</div>
+          <div class="corpus-doi">Zenodo · DOI Verified</div>
+        </div>
+      </div>
+
+      <div class="corpus-item">
+        <div class="corpus-num c-teal">269</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-teal">Misconceptions Framework</div>
+          <div class="corpus-name">The Misconceptions Framework: Countering Narratives Against Sanatana Dharma with Evidence</div>
+          <div class="corpus-doi">Zenodo · DOI Verified</div>
+        </div>
+      </div>
+
+      <div class="corpus-item">
+        <div class="corpus-num c-violet">292</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-violet">Civic AI</div>
+          <div class="corpus-name">Civic Reflexivity Engines: AI-Powered Platforms for Democratic Deliberation and Policy Co-Creation</div>
+          <div class="corpus-doi">Zenodo · DOI Verified</div>
+        </div>
+      </div>
+
+      <div class="corpus-item">
+        <div class="corpus-num c-coral">299</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-coral">Post-Colonial Governance</div>
+          <div class="corpus-name">Ethical Governance in Post-Colonial States: Dharmic Principles for the 21st Century</div>
+          <div class="corpus-doi">Zenodo · DOI Verified</div>
+        </div>
+      </div>
+
+      <div class="corpus-item">
+        <div class="corpus-num c-gold">301</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-gold">Behavioural Policy</div>
+          <div class="corpus-name">Dharma Nudges: Ancient Wisdom as Behavioural Policy Architecture for Modern Governance</div>
+          <div class="corpus-doi">Zenodo · DOI Verified</div>
+        </div>
+      </div>
+
+      <div class="corpus-item">
+        <div class="corpus-num c-teal">300</div>
+        <div class="corpus-content">
+          <div class="corpus-cat c-teal">National Integration</div>
+          <div class="corpus-name">Bharat-Ekta-Mission: Voluntary Caste Transcendence and Economic Integration Framework 2025</div>
+          <div class="corpus-doi">10.5281/zenodo.17824362</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top: 32px; text-align: center;">
+      <a href="https://kallol-241-repositories.netlify.app/" target="_blank" class="btn-ghost">
+        View Full 264 DOI Corpus ↗
+      </a>
+      &nbsp;&nbsp;
+      <a href="https://bengal-renaissance.netlify.app/" target="_blank" class="btn-ghost">
+        Bengal Renaissance Portal ↗
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── BENGAL RENAISSANCE 2.0 ── -->
+<section id="bengal" style="background: var(--bg2);">
+  <div class="wrapper">
+    <div class="section-eyebrow animate-in">Bengal Renaissance 2.0 · Live Portal</div>
+    <h2 class="section-title animate-in">
+      The intellectual rebirth<br>of <em>Sonar Bangla</em>
+    </h2>
+    <p class="section-sub animate-in">
+      Bengal gave India its first Renaissance. The Bengal Renaissance 2.0 portal — bengal-renaissance.netlify.app —
+      is the civic face of this platform. It positions West Bengal as the pilot state for India's
+      civilizational governance model, grounded in Dharmic scholarship and Double Engine delivery accountability.
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; background: var(--border); margin-bottom: 48px;" class="animate-in">
+
+      <div style="background: var(--bg3); padding: 32px 28px; border-top: 2px solid var(--gold);">
+        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px;">Historical Legacy</div>
+        <div style="font-family: var(--serif); font-size: 20px; font-weight: 300; margin-bottom: 12px; color: var(--text);">First Bengal Renaissance</div>
+        <div style="font-size: 13px; color: var(--text2); line-height: 1.8;">
+          Raja Ram Mohan Roy, Swami Vivekananda, Rabindranath Tagore, Sri Aurobindo, Bankim Chandra —
+          Bengal's first Renaissance produced the intellectual spine of modern India.
+          It was rooted in Dharmic thought meeting rational inquiry.
+          This platform carries that exact DNA into the 21st century.
+        </div>
+      </div>
+
+      <div style="background: var(--bg3); padding: 32px 28px; border-top: 2px solid var(--teal);">
+        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px;">The Civilizational Gap</div>
+        <div style="font-family: var(--serif); font-size: 20px; font-weight: 300; margin-bottom: 12px; color: var(--text);">Why Bengal Needs This Now</div>
+        <div style="font-size: 13px; color: var(--text2); line-height: 1.8;">
+          Bengal has been subject to systematic narrative distortion — colonial census rigidification of caste (1872–1931),
+          identity vacuums created through historical misrepresentation, and governance opacity on Central scheme delivery.
+          The Helix Dharma-Gov Stack addresses all three simultaneously with peer-verified scholarship.
+        </div>
+      </div>
+
+      <div style="background: var(--bg3); padding: 32px 28px; border-top: 2px solid var(--violet);">
+        <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px;">The New Architecture</div>
+        <div style="font-family: var(--serif); font-size: 20px; font-weight: 300; margin-bottom: 12px; color: var(--text);">Dharma + Data + Delivery</div>
+        <div style="font-size: 13px; color: var(--text2); line-height: 1.8;">
+          Ancient Dharma provides the philosophical architecture.
+          264 DOI-verified papers provide the evidential backbone.
+          Netlify + GitHub infrastructure provides the deployment scale.
+          The result: Bengal's first civilizational AI governance operating system —
+          built by a single independent researcher, not an institution.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bengal Renaissance Pillars -->
+    <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px;" class="animate-in">
+      Five Pillars of Bengal Renaissance 2.0
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--border); margin-bottom: 48px;" class="animate-in">
+      <div style="background: var(--bg3); padding: 24px 20px; text-align: center;">
+        <div style="font-family: var(--serif); font-size: 32px; font-weight: 300; color: var(--gold); margin-bottom: 8px;">01</div>
+        <div style="font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 8px;">Dharmic Identity</div>
+        <div style="font-size: 11px; color: var(--text2); line-height: 1.6;">Sanatana Samyata Oracle counters identity erosion with evidence-based Dharmic literacy</div>
+      </div>
+      <div style="background: var(--bg3); padding: 24px 20px; text-align: center;">
+        <div style="font-family: var(--serif); font-size: 32px; font-weight: 300; color: var(--teal); margin-bottom: 8px;">02</div>
+        <div style="font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 8px;">Governance Accountability</div>
+        <div style="font-size: 11px; color: var(--text2); line-height: 1.6;">Double Engine Pulse tracks Central scheme delivery district-by-district with Karma Index scoring</div>
+      </div>
+      <div style="background: var(--bg3); padding: 24px 20px; text-align: center;">
+        <div style="font-family: var(--serif); font-size: 32px; font-weight: 300; color: var(--violet); margin-bottom: 8px;">03</div>
+        <div style="font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 8px;">Merit Recognition</div>
+        <div style="font-size: 11px; color: var(--text2); line-height: 1.6;">Helix Merit Ledger indexes Bengal's contributors by guna + karma — caste-neutral, evidence-first</div>
+      </div>
+      <div style="background: var(--bg3); padding: 24px 20px; text-align: center;">
+        <div style="font-family: var(--serif); font-size: 32px; font-weight: 300; color: var(--amber); margin-bottom: 8px;">04</div>
+        <div style="font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 8px;">Historical Truth</div>
+        <div style="font-size: 11px; color: var(--text2); line-height: 1.6;">Decolonizing the 1872–1931 British Census distortions with 264 DOI-indexed evidential papers</div>
+      </div>
+      <div style="background: var(--bg3); padding: 24px 20px; text-align: center;">
+        <div style="font-family: var(--serif); font-size: 32px; font-weight: 300; color: var(--coral); margin-bottom: 8px;">05</div>
+        <div style="font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 8px;">Viksit Bharat Link</div>
+        <div style="font-size: 11px; color: var(--text2); line-height: 1.6;">Bengal as pilot for PM Modi's Viksit Bharat 2047 civilizational governance model — DOI #268</div>
+      </div>
+    </div>
+
+    <!-- Key Bengal-specific papers -->
+    <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); margin-bottom: 20px;" class="animate-in">
+      Bengal-Specific Research Papers from Corpus
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1px; background: var(--border);" class="animate-in">
+
+      <div style="background: var(--bg3); padding: 20px 24px; display: flex; gap: 16px; transition: background 0.2s;" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background='var(--bg3)'">
+        <div style="font-family: var(--mono); font-size: 18px; font-weight: 300; color: var(--text3); min-width: 40px; line-height: 1.4;" class="c-gold">053</div>
+        <div>
+          <div style="font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;" class="c-teal">Bengal Health Policy</div>
+          <div style="font-size: 13px; font-weight: 400; color: var(--text); line-height: 1.5; margin-bottom: 4px;">District-Level Analysis of Ayushman Bharat: Evaluating Health Justice in West Bengal</div>
+          <div style="font-family: var(--mono); font-size: 10px; color: var(--text3);">10.5281/ZENODO.16568316</div>
+        </div>
+      </div>
+
+      <div style="background: var(--bg3); padding: 20px 24px; display: flex; gap: 16px; transition: background 0.2s;" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background='var(--bg3)'">
+        <div style="font-family: var(--mono); font-size: 18px; font-weight: 300; color: var(--text3); min-width: 40px; line-height: 1.4;" class="c-teal">054</div>
+        <div>
+          <div style="font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;" class="c-teal">Bengal Water Policy</div>
+          <div style="font-size: 13px; font-weight: 400; color: var(--text); line-height: 1.5; margin-bottom: 4px;">Hydro-Politics and Equity: Jal Jeevan Mission Assessment for Bengal</div>
+          <div style="font-family: var(--mono); font-size: 10px; color: var(--text3);">10.5281/ZENODO.16527240</div>
+        </div>
+      </div>
+
+      <div style="background: var(--bg3); padding: 20px 24px; display: flex; gap: 16px; transition: background 0.2s;" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background='var(--bg3)'">
+        <div style="font-family: var(--mono); font-size: 18px; font-weight: 300; color: var(--text3); min-width: 40px; line-height: 1.4;" class="c-amber">268</div>
+        <div>
+          <div style="font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;" class="c-amber">Viksit Bharat 2047</div>
+          <div style="font-size: 13px; font-weight: 400; color: var(--text); line-height: 1.5; margin-bottom: 4px;">PM Modi's Viksit Bharat 2047: Policy and Civilizational Analysis — Bengal Deployment Blueprint</div>
+          <div style="font-family: var(--mono); font-size: 10px; color: var(--text3);">Zenodo · DOI Verified</div>
+        </div>
+      </div>
+
+      <div style="background: var(--bg3); padding: 20px 24px; display: flex; gap: 16px; transition: background 0.2s;" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background='var(--bg3)'">
+        <div style="font-family: var(--mono); font-size: 18px; font-weight: 300; color: var(--text3); min-width: 40px; line-height: 1.4;" class="c-coral">067</div>
+        <div>
+          <div style="font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;" class="c-coral">Governance Revolution</div>
+          <div style="font-size: 13px; font-weight: 400; color: var(--text); line-height: 1.5; margin-bottom: 4px;">From Elite Capture to Citizen Empowerment: India's Dual-Track Governance Revolution</div>
+          <div style="font-family: var(--mono); font-size: 10px; color: var(--text3);">10.5281/ZENODO.15880176</div>
+        </div>
+      </div>
+
+      <div style="background: var(--bg3); padding: 20px 24px; display: flex; gap: 16px; transition: background 0.2s;" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background='var(--bg3)'">
+        <div style="font-family: var(--mono); font-size: 18px; font-weight: 300; color: var(--text3); min-width: 40px; line-height: 1.4;" class="c-violet">273</div>
+        <div>
+          <div style="font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;" class="c-violet">Caste Decolonization · DeSci 92%</div>
+          <div style="font-size: 13px; font-weight: 400; color: var(--text); line-height: 1.5; margin-bottom: 4px;">Decolonizing the Caste Narrative: Countering 1872–1931 British Census Distortions in Bengal</div>
+          <div style="font-family: var(--mono); font-size: 10px; color: var(--text3);">Zenodo · DeSci Verified 92%</div>
+        </div>
+      </div>
+
+      <div style="background: var(--bg3); padding: 20px 24px; display: flex; gap: 16px; transition: background 0.2s;" onmouseover="this.style.background='var(--bg4)'" onmouseout="this.style.background='var(--bg3)'">
+        <div style="font-family: var(--mono); font-size: 18px; font-weight: 300; color: var(--text3); min-width: 40px; line-height: 1.4;" class="c-gold">300</div>
+        <div>
+          <div style="font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;" class="c-gold">National Integration</div>
+          <div style="font-size: 13px; font-weight: 400; color: var(--text); line-height: 1.5; margin-bottom: 4px;">Bharat-Ekta-Mission: Voluntary Caste Transcendence and Economic Integration Framework 2025</div>
+          <div style="font-family: var(--mono); font-size: 10px; color: var(--text3);">10.5281/zenodo.17824362</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top: 32px; text-align: center;" class="animate-in">
+      <a href="https://bengal-renaissance.netlify.app/" target="_blank" class="btn-primary">
+        Bengal Renaissance Portal ↗
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── RECOGNITION PATHWAY ── -->
+<section id="recognition">
+  <div class="wrapper">
+    <div class="section-eyebrow animate-in">Recognition Pathway</div>
+    <h2 class="section-title animate-in">
+      From researcher to<br><em>Bengal's Systemic Architect</em>
+    </h2>
+    <p class="section-sub animate-in">
+      You are not presenting ideas. You are presenting a running system built on verifiable,
+      peer-indexed scholarship. Each platform layer is a published paper made operational.
+    </p>
+
+    <div class="recognition-timeline animate-in">
+
+      <div class="timeline-item">
+        <div class="timeline-dot" style="border-color: var(--violet);"></div>
+        <div class="timeline-phase" style="color: var(--violet);">Phase 01 · Immediate</div>
+        <div class="timeline-title">Academic & International Recognition</div>
+        <div class="timeline-desc">
+          First independent researcher in India to operationalise a DeSci-verified Dharmic governance platform.
+          Target: Limca Book of Records — independent researcher builds state-level AI civic intelligence stack.
+          International: present at DeSci conferences as "Dharma-driven AI governance — India's civilizational contribution to global AI ethics."
+        </div>
+        <div class="timeline-tags">
+          <span class="timeline-tag">Limca Book of Records candidate</span>
+          <span class="timeline-tag">DeSci Conference 2026</span>
+          <span class="timeline-tag">National IP Award</span>
+          <span class="timeline-tag">IIT / IIM Academic Partnership</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot" style="border-color: var(--amber);"></div>
+        <div class="timeline-phase" style="color: var(--amber);">Phase 02 · 60 Days</div>
+        <div class="timeline-title">National Replication · Viksit Bharat 2047</div>
+        <div class="timeline-desc">
+          Bengal is the pilot. Once the 23-district model demonstrates civic intelligence at scale,
+          replicate to all 28 states. The Helix Dharma-Gov Stack becomes India's first
+          civilizational AI governance operating system — Ancient Dharma + Modern Technology + Democratic Accountability.
+        </div>
+        <div class="timeline-tags">
+          <span class="timeline-tag">28 State Rollout</span>
+          <span class="timeline-tag">Viksit Bharat 2047 integration</span>
+          <span class="timeline-tag">UN SDG alignment</span>
+          <span class="timeline-tag">Global export — Dharmic AI governance model</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── CTA ── -->
+<section class="cta-section">
+  <div class="wrapper">
+    <h2 class="cta-title">
+      The choice is informed.<br>The heritage is <em>inclusive</em>.<br>The path is eternal.
+    </h2>
+    <p class="cta-sub">
+      "एकं सद्विप्रा बहुधा वदन्ति" — Truth is one; the wise call it by various names.
+      This platform presents the authentic face of Sanatana Dharma as civic infrastructure —
+      not to diminish other paths, but to demonstrate that ancient wisdom governs well.
+    </p>
+    <div class="cta-buttons">
+      <a href="https://bengal-renaissance.netlify.app/" target="_blank" class="btn-primary">
+        Bengal Renaissance Portal ↗
+      </a>
+      <a href="https://kallol-241-repositories.netlify.app/" target="_blank" class="btn-ghost">
+        Full Research Corpus · 264 DOIs ↗
+      </a>
+      <a href="https://helixoriginator.github.io/sanatan-dharma-research-repository/" target="_blank" class="btn-ghost">
+        Dharma Research Hub ↗
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="wrapper">
+    <div class="footer-inner">
+
+      <div>
+        <div class="footer-logo">Helix Dharma-Gov Stack</div>
+        <p class="footer-tagline">
+          Bengal Renaissance 2.0 · The world's first AI-powered civilizational governance platform
+          built entirely from peer-indexed Dharmic research.
+        </p>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Platform Layers</div>
+        <ul class="footer-links">
+          <li><a href="#layers">Layer 01 · Sanatana Samyata Oracle</a></li>
+          <li><a href="#layers">Layer 02 · Double Engine Pulse</a></li>
+          <li><a href="#layers">Layer 03 · Helix Merit Ledger</a></li>
+          <li><a href="#districts">23 Bengal Districts</a></li>
+          <li><a href="#philosophy">Philosophical Foundations</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Research Repositories</div>
+        <ul class="footer-links">
+          <li><a href="https://bengal-renaissance.netlify.app/" target="_blank">Bengal Renaissance Portal ↗</a></li>
+          <li><a href="https://kallol-241-repositories.netlify.app/" target="_blank">264 DOI Repository ↗</a></li>
+          <li><a href="https://helixoriginator.github.io/sanatan-dharma-research-repository/" target="_blank">Dharma Research Hub ↗</a></li>
+          <li><a href="https://orcid.org/0009-0007-4971-8936" target="_blank">ORCID Profile ↗</a></li>
+          <li><a href="https://ssrn.com" target="_blank">SSRN · 9 Articles ↗</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-credit">
+        Created by <strong>Kallol Chakrabarti</strong>, Global Independent Researcher<br>
+        <span style="font-size: 12px; color: var(--text3);">
+          Lucknow, Uttar Pradesh, India · National IP Award Invitee · PMO Submission March 2026 · Limca Book of Records Candidate
+        </span>
+      </div>
+      <div class="footer-orcid">
+        ORCID 0009-0007-4971-8936<br>
+        <span style="color: var(--text3);">© 2026 All Rights Reserved</span>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  // ── ACCORDION LAYERS ──
+  function toggleLayer(id) {
+    const block = document.getElementById(id);
+    const body = block.querySelector('.layer-body');
+    const isOpen = block.classList.contains('open');
+
+    // Close all
+    document.querySelectorAll('.layer-block').forEach(b => {
+      b.classList.remove('open');
+      b.querySelector('.layer-body').style.maxHeight = '0';
+    });
+
+    // Open clicked if it was closed
+    if (!isOpen) {
+      block.classList.add('open');
+      body.style.maxHeight = body.scrollHeight + 'px';
+    }
+  }
+
+  // ── SCROLL ANIMATIONS ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, 80 * i);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
+
+  // ── LAYER ACCORDION: re-compute max-height on resize ──
+  window.addEventListener('resize', () => {
+    document.querySelectorAll('.layer-block.open .layer-body').forEach(body => {
+      body.style.maxHeight = body.scrollHeight + 'px';
+    });
+  });
+
+  // ── NAV ACTIVE STATE ──
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => link.style.color = '');
+        const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+        if (active) active.style.color = 'var(--gold)';
+      }
+    });
+  }, { threshold: 0.5 });
+
+  sections.forEach(s => navObserver.observe(s));
+</script>
+
+</body>
+</html>
